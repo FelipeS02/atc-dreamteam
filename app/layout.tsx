@@ -1,11 +1,17 @@
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
+import { Inter as FontSans, KoHo } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
+});
+
+const fontKoho = KoHo({
+  subsets: ['latin'],
+  variable: '--font-koho',
+  weight: ['500', '600'],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +29,8 @@ export default function RootLayout({
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
-          fontSans.variable
+          fontSans.variable,
+          fontKoho.variable
         )}
       >
         {children}

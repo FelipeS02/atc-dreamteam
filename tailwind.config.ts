@@ -21,6 +21,7 @@ const config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        koho: ['var(--font-koho)'],
       },
       colors: {
         border: 'hsl(var(--border))',

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter as FontSans, KoHo } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import Arena from '@/public/assets/image/arena_4.webp';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -28,10 +29,15 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'min-h-screen bg-none font-sans antialiased',
+          'bg-[linear-gradient(to_right_bottom,rgba(0,0,0,0.5),rgba(0,0,0,0)),url("/assets/image/arena_4.webp")]',
           fontSans.variable,
           fontKoho.variable
         )}
+        style={{
+          backgroundSize: 'fill',
+          backgroundPosition: 'center',
+        }}
       >
         {children}
       </body>

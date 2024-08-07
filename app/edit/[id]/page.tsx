@@ -1,29 +1,31 @@
 'use client';
-import { getTeamById } from '@/helpers/teams';
+import { useCallback, useEffect, useState } from 'react';
+import TeamName from '@/components/Edit/TeamName';
+import { teamIsValid } from '@/helpers/teams';
+import api from '@/lib/api';
+import ApiResponse from '@/models/api.model';
 import { Team } from '@/models/team.model';
-import React, { useCallback, useEffect, useState } from 'react';
+import { TeamInfo } from '@/models/pages/editTeam.model';
 
-type Info = {
-  loading: boolean;
-  team: Team;
-};
-
-const initialState: Info = {
+const initialState: TeamInfo = {
   loading: true,
   team: { alignment: null, alignmentId: null, id: 0, name: '', players: [] },
 };
 
 const Edit = ({ params }: { params: { id: string } }) => {
   const teamId = Number(params?.id) || 0;
-  const [{ loading, team }, setInfo] = useState<Info>(initialState);
+  const [{ loading, team }, setInfo] = useState<TeamInfo>(initialState);
 
   const getTeam = useCallback(async () => {
     try {
       if (!teamId) return;
-      const team = await (await fetch(`/api/teams/${teamId}`)).json();
+      const { data: foundedTeam } = await api.get<ApiResponse<Team>>(
+        `/api/teams/${teamId}`
+      );
 
-      if (!team) return;
-      setInfo((prev) => ({ ...prev, team }));
+      if (!foundedTeam) return;
+
+      setInfo((prev) => ({ ...prev, team: { ...prev.team, ...foundedTeam } }));
     } catch (error) {
       console.log(error);
     } finally {
@@ -35,7 +37,19 @@ const Edit = ({ params }: { params: { id: string } }) => {
     getTeam();
   }, [getTeam]);
 
-  return <div>page</div>;
+  return (
+    <main className='grid grid-cols-1 lg:grid-cols-10'>
+      <div className='flex flex-col col-span-4'>
+        <TeamName
+          name={team.name}
+          valid={teamIsValid(team)}
+          loading={loading}
+          teamId={teamId}
+          setInfo={setInfo}
+        />
+      </div>
+    </main>
+  );
 };
 
 export default Edit;

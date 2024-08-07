@@ -1,9 +1,15 @@
-import { cn } from "@/lib/utils";
-import { Team } from "@/models/team.model";
-import { ClipboardPenLine, Link, LucideProps, ShieldAlert, ShieldCheck } from "lucide-react";
-import { FC } from "react";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import { cn } from '@/lib/utils';
+import { Team } from '@/models/team.model';
+import {
+  ClipboardPenLine,
+  LucideProps,
+  ShieldAlert,
+  ShieldCheck,
+} from 'lucide-react';
+import { FC } from 'react';
+import { Button } from './ui/button';
+import { Separator } from './ui/separator';
+import Link from 'next/link';
 
 type TeamProps = {
   name: string;
@@ -13,7 +19,7 @@ type TeamProps = {
   valid: boolean;
 };
 
-const TeamShield: FC<Pick<TeamProps, 'valid'>> = ({ valid }) => {
+export const TeamShield: FC<Pick<TeamProps, 'valid'>> = ({ valid }) => {
   const shieldProps: LucideProps = {
     strokeWidth: 1,
   };
@@ -37,7 +43,7 @@ const EditButton: FC<Pick<TeamProps, 'buttonLink'>> = ({ buttonLink }) => {
   return (
     <Button
       variant={'outline'}
-      className='flex gap-1 w-fit'
+      className='w-fit'
       size={'sm'}
       asChild
     >
@@ -109,4 +115,4 @@ const TeamResume: FC<TeamProps> = ({
   return null;
 };
 
-export default TeamResume
+export default TeamResume;

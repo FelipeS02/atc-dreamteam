@@ -1,6 +1,5 @@
 import { getTeamById } from '@/helpers/teams';
 import { NextApiRequest } from 'next';
-import { NextResponse } from 'next/server';
 
 export async function GET(
   _req: NextApiRequest,
@@ -11,7 +10,7 @@ export async function GET(
 
     if (!team) return new Response('Team not founded', { status: 404 });
 
-    return Response.json({ team });
+    return Response.json({ data: team, status: 200, message: 'Team founded' });
   } catch (error) {
     console.log(error);
     return new Response('Internal Server Error', { status: 500 });

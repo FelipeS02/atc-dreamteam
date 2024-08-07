@@ -1,5 +1,5 @@
 import Arena from '@/components/Arena/Arena';
-import TeamResume from '@/components/Home/TeamResume';
+import TeamResume from '@/components/TeamResume';
 import { getTeams, teamIsValid } from '@/helpers/teams';
 
 async function Home() {

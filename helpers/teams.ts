@@ -40,7 +40,21 @@ export const getTeamById = async (id: Team['id']) => {
 
     return team;
   } catch (error) {
-    console.log(error);
-    return undefined;
+    throw error;
+  }
+};
+
+export const editTeamName = async (id: Team['id'], name: Team['name']) => {
+  try {
+    if (!id || !name) throw new Error('Team id or name not exists');
+
+    await prisma.team.update({
+      where: { id },
+      data: { name },
+    });
+
+    return true;
+  } catch (error) {
+    throw error;
   }
 };

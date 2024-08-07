@@ -6,6 +6,7 @@ import api from '@/lib/api';
 import ApiResponse from '@/models/api.model';
 import { Team } from '@/models/team.model';
 import { TeamInfo } from '@/models/pages/editTeam.model';
+import Arena from '@/components/Arena/Arena';
 
 const initialState: TeamInfo = {
   loading: true,
@@ -38,7 +39,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
   }, [getTeam]);
 
   return (
-    <main className='grid grid-cols-1 lg:grid-cols-10'>
+    <main className='grid grid-cols-1 lg:grid-cols-10 gap-6 flex-grow'>
       <div className='flex flex-col col-span-4'>
         <TeamName
           name={team.name}
@@ -47,6 +48,10 @@ const Edit = ({ params }: { params: { id: string } }) => {
           teamId={teamId}
           setInfo={setInfo}
         />
+      </div>
+
+      <div className='block col-span-4 col-start-6 p-4 bg-background rounded-md'>
+        <Arena orientation='vertical'/>
       </div>
     </main>
   );

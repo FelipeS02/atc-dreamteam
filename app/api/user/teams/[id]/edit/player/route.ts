@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
       status: 200,
       message: `Player ${playerId} updated`,
     });
+    
   } catch (error) {
     console.log(error, req.nextUrl.searchParams.get('id'));
     return new Response('Internal Server Error', { status: 500 });

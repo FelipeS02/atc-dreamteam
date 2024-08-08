@@ -139,7 +139,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
             variant={'link'}
             className='w-fit text-white -ml-4'
           >
-            <Link href={'/'}>
+            <Link href={'/'} replace>
               <ChevronLeft size={18} /> Volver al inicio
             </Link>
           </Button>

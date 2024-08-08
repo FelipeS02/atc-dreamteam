@@ -1,9 +1,8 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import TeamName from '@/components/Edit/TeamName';
 import { teamIsValid } from '@/helpers/teams';
 import api from '@/lib/api';
-import { TeamInfo } from '@/models/pages/editTeam.model';
 import Arena from '@/components/Arena/Arena';
 import TeamAlignments from '@/components/Edit/TeamAlignments';
 import TeamPlayers from '@/components/Edit/TeamPlayers';
@@ -14,11 +13,7 @@ import AddPlayerModal from '@/components/Edit/AddPlayerModal/AddPlayerModal';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-
-const initialTeamState: TeamInfo = {
-  loading: true,
-  team: { alignment: null, alignmentId: null, id: 0, name: '', players: [] },
-};
+import useTeamById from '@/hooks/useTeamById';
 
 const initialPlayerState: Player = {
   age: '',
@@ -29,30 +24,16 @@ const initialPlayerState: Player = {
   position: '',
   rating: '',
   teamId: 0,
+  default: true
 };
 
 const Edit = ({ params }: { params: { id: string } }) => {
   const teamId = Number(params?.id) || 0;
-  const [{ loading, team }, setInfo] = useState<TeamInfo>(initialTeamState);
+  const { loading, setInfo, team } = useTeamById(teamId);
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [playerToReplace, setPlayerToReplace] =
     useState<Player>(initialPlayerState);
-
-  const getTeam = useCallback(async () => {
-    try {
-      if (!teamId) return;
-      const { data: foundedTeam } = await api.get(`/api/user/teams/${teamId}`);
-
-      if (!foundedTeam) return;
-
-      setInfo((prev) => ({ ...prev, team: foundedTeam }));
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setInfo((prev) => ({ ...prev, loading: false }));
-    }
-  }, [teamId]);
 
   const replacePlayer = (player: Player) => {
     setPlayerToReplace(player);
@@ -94,10 +75,6 @@ const Edit = ({ params }: { params: { id: string } }) => {
     }
   };
 
-  useEffect(() => {
-    getTeam();
-  }, [getTeam]);
-
   return (
     <>
       <AddPlayerModal
@@ -108,7 +85,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
         submitting={submitting}
       />
       <main className='flex flex-col gap-4 lg:grid lg:grid-cols-10 lg:gap-6 flex-grow'>
-        <div className='flex flex-col col-span-1 lg:col-span-4 gap-1 max-h-full '>
+        <div className='flex flex-col col-span-1 lg:col-span-4 gap-1 max-h-full lg:-mt-8'>
           <Button
             asChild
             size={'sm'}
@@ -142,7 +119,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <div className='p-4 bg-background h-[700px] rounded-md flex-grow lg:h-full lg:max-h-full lg:col-span-5 lg:col-start-6'>
+        <div className='p-4 bg-background h-[750px] rounded-md flex-grow lg:h-full lg:max-h-full lg:col-span-5 lg:col-start-6'>
           <Arena orientation='vertical'>
             {team.players.map((p) => (
               <button
@@ -151,7 +128,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
                 className='flex items-center justify-center'
                 style={{ gridArea: p.position }}
               >
-                <ArenaPlayer {...p} />
+                <ArenaPlayer {...p} key={p.id} />
               </button>
             ))}
           </Arena>

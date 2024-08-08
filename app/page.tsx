@@ -1,6 +1,35 @@
 import Arena from '@/components/Arena/Arena';
+import ArenaPlayer from '@/components/Arena/ArenaPlayer';
 import TeamResume from '@/components/TeamResume';
 import { getTeams, teamIsValid } from '@/helpers/teams';
+import { Team } from '@/models/team.model';
+
+const RenderTeams = ({
+  players,
+  minimal,
+}: {
+  players: Team['players'];
+  minimal?: boolean;
+}) => {
+  if (!players) return null;
+
+  return (
+    <>
+      {players.map((p) => (
+        <ArenaPlayer
+          minimal={minimal}
+          className={
+            p.teamId === 1
+              ? 'border-4 border-blue-500'
+              : 'border-4 border-red-500'
+          }
+          {...p}
+          key={p.id}
+        />
+      ))}
+    </>
+  );
+};
 
 async function Home() {
   const teams = await getTeams();
@@ -29,7 +58,9 @@ async function Home() {
               valid={teamIsValid(teams[2])}
             />
           </header>
-          <Arena className='hidden flex-grow md:block h-[400px] lg:h-[600px]'></Arena>
+          <Arena className='hidden flex-grow md:block h-[400px] lg:h-[600px]'>
+            <RenderTeams players={[...teams[1].players, ...teams[2].players]} />
+          </Arena>
           <div className='flex flex-col md:hidden size-full gap-4'>
             <TeamResume
               side='left'
@@ -38,7 +69,12 @@ async function Home() {
               name={teams[1]?.name}
               valid={teamIsValid(teams[1])}
             />
-            <Arena orientation='vertical' className='block' />
+            <Arena orientation='vertical' className='block'>
+              <RenderTeams
+                players={[...teams[1].players, ...teams[2].players]}
+                minimal
+              />
+            </Arena>
             <TeamResume
               side='right'
               buttonLink={`/edit/${teams[2].id}`}

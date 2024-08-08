@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -19,6 +12,7 @@ import { TeamInfo } from '@/models/pages/editTeam.model';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
+import useAlignments from '@/hooks/useAlignments';
 
 interface SectionProps {
   teamId: Team['id'];
@@ -133,38 +127,12 @@ const AlignmentsCarrousel: FC<CarrouselProps> = ({
   );
 };
 
-const initialState = {
-  loading: true,
-  alignments: [] as Alignment[],
-};
-
 const TeamAlignments: FC<SectionProps> = ({
   selectedAlignmentId,
   setInfo,
   teamId,
 }) => {
-  const [error, setError] = useState(false);
-  const [{ alignments, loading }, setAlignments] = useState(initialState);
-
-  const getAlignments = useCallback(async () => {
-    try {
-      const { data } = await api.get('/api/alignments');
-
-      setAlignments((prev) => ({
-        ...prev,
-        alignments: data,
-      }));
-    } catch (error) {
-      console.log(error);
-      setError(true);
-    } finally {
-      setAlignments((prev) => ({ ...prev, loading: false }));
-    }
-  }, []);
-
-  useEffect(() => {
-    getAlignments();
-  }, []);
+  const { alignments, error, loading } = useAlignments();
 
   return (
     <div className='flex-flex-col bg-background rounded-md'>

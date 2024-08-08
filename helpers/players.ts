@@ -10,6 +10,7 @@ export const replacePlayer = async (nP: ApiPlayer, playerId: Player['id']) => {
       img: nP.player_image,
       name: nP.player_name,
       rating: nP.player_rating,
+      default: false,
     },
   });
 

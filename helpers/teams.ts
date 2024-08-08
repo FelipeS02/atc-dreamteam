@@ -4,12 +4,16 @@ import { Team } from '@/models/team.model';
 export const teamIsValid = (team: Team): boolean => {
   if (!team) return false;
 
-  if (team?.players?.length === 0) return false;
+  const { players } = team;
+
+  const teamHaveDefaultPlayers = players.some((p) => p.default);
+
+  if (teamHaveDefaultPlayers || players.length === 0) return false;
 
   return true;
 };
 
-type TeamsDictionary = Record<Team['id'], Team>;
+export type TeamsDictionary = Record<Team['id'], Team>;
 
 export const getTeams = async (): Promise<TeamsDictionary | undefined> => {
   try {
@@ -107,6 +111,7 @@ export const editTeamAlignment = async (
             position,
             rating: '',
             teamId,
+            default: true,
           },
         });
       }

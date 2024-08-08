@@ -96,7 +96,9 @@ const Edit = ({ params }: { params: { id: string } }) => {
           (p) => p.id === updatedPlayer.id
         );
 
-        if (!playerIndex) return newState;
+        console.log(playerIndex)
+
+        if (playerIndex === undefined) return newState;
 
         newState.team.players[playerIndex] = { ...updatedPlayer };
 

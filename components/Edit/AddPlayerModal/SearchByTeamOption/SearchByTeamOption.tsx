@@ -122,7 +122,12 @@ const SearchByTeamOption: FC<Props> = ({ onPlayerSelect }) => {
           `/api/teams?leagueId=${leagueId}`
         );
 
-        setCombos((prev) => ({ ...prev, teams }));
+        // Filter of teams without players
+        const filteredTeams = (teams as ApiTeam[]).filter(
+          (t) => t?.players?.length > 0
+        );
+
+        setCombos((prev) => ({ ...prev, teams: filteredTeams }));
       }
 
       if (key === 'team') {

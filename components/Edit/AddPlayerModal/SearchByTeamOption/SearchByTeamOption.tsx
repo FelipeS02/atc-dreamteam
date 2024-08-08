@@ -153,7 +153,7 @@ const SearchByTeamOption: FC<Props> = ({ onPlayerSelect }) => {
 
   useEffect(() => {
     getCountries();
-  }, []);
+  }, [getCountries]);
 
   const itemClasses =
     'grid grid-cols-2 grid-flow-row max-h-[400px] overflow-auto gap-2';

@@ -1,8 +1,8 @@
 import { getTeamById, deleteTeam } from '@/helpers/teams';
-import { NextApiRequest } from 'next';
+import { NextRequest } from 'next/server';
 
 export async function GET(
-  _req: NextApiRequest,
+  _req: NextRequest,
   { params }: { params: { id: number } }
 ) {
   try {
@@ -18,7 +18,7 @@ export async function GET(
 }
 
 export async function DELETE(
-  _req: NextApiRequest,
+  _req: NextRequest,
   { params }: { params: { id: number } }
 ) {
   try {

@@ -26,7 +26,7 @@ import { Input } from '../ui/input';
 import { AxiosError } from 'axios';
 import api from '@/lib/api';
 import { TeamInfo } from '@/models/pages/editTeam.model';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { DialogProps } from '@radix-ui/react-dialog';
 
 interface Props {
   name: string;
@@ -40,7 +40,7 @@ interface Props {
 interface EditModalProps
   extends PropsWithChildren,
     Pick<Props, 'name' | 'teamId' | 'setInfo'>,
-    Pick<DialogPrimitive.DialogProps, 'onOpenChange' | 'open'> {
+    Pick<DialogProps, 'onOpenChange' | 'open'> {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -66,7 +66,7 @@ const EditModal: FC<EditModalProps> = ({
     try {
       setLoading(true);
 
-      await api.get(`/api/teams/${teamId}/editName?name=${newName}`);
+      await api.get(`/api/user/teams/${teamId}/edit/name?name=${newName}`);
 
       setInfo((prev) => ({ ...prev, team: { ...prev.team, name: newName } }));
 
@@ -139,7 +139,7 @@ const TeamName: FC<Props> = ({
     >
       <div
         className={cn(
-          'p-4 border-neutral-300 bg-background flex items-center rounded-md',
+          'p-3 px-1 bg-background flex items-center rounded-md',
           className
         )}
       >

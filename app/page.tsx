@@ -15,7 +15,7 @@ async function Home() {
           >
             <TeamResume
               side='left'
-              buttonLink=''
+              buttonLink={`/edit/${teams[1].id}`}
               alignment={teams[1].alignment}
               name={teams[1]?.name}
               valid={teamIsValid(teams[1])}
@@ -23,7 +23,7 @@ async function Home() {
             <span className='text-koho text-3xl font-semibold'>VS</span>
             <TeamResume
               side='right'
-              buttonLink=''
+              buttonLink={`/edit/${teams[2].id}`}
               alignment={teams[2].alignment}
               name={teams[2]?.name}
               valid={teamIsValid(teams[2])}
@@ -33,7 +33,7 @@ async function Home() {
           <div className='flex flex-col md:hidden size-full gap-4'>
             <TeamResume
               side='left'
-              buttonLink=''
+              buttonLink={`/edit/${teams[1].id}`}
               alignment={teams[1].alignment}
               name={teams[1]?.name}
               valid={teamIsValid(teams[1])}
@@ -41,7 +41,7 @@ async function Home() {
             <Arena orientation='vertical' className='block' />
             <TeamResume
               side='right'
-              buttonLink=''
+              buttonLink={`/edit/${teams[2].id}`}
               alignment={teams[2].alignment}
               name={teams[2]?.name}
               valid={teamIsValid(teams[2])}

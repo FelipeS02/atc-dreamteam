@@ -31,6 +31,8 @@ const RenderTeams = ({
   );
 };
 
+export const dynamic = 'force-dynamic';
+
 async function Home() {
   const teams = await getTeams();
 

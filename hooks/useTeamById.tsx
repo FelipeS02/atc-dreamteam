@@ -9,7 +9,9 @@ const initialTeamState: TeamInfo = {
 
 const useTeamById = (teamId: number) => {
   const [mounted, setMounted] = useState(false);
+  
   const [info, setInfo] = useState<TeamInfo>(initialTeamState);
+
   const getTeam = useCallback(async () => {
     try {
       if (!teamId) return;

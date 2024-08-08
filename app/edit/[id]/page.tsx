@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
 import TeamName from '@/components/Edit/TeamName';
 import { teamIsValid } from '@/helpers/teams';
 import api from '@/lib/api';
@@ -14,6 +14,16 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import useTeamById from '@/hooks/useTeamById';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const initialPlayerState: Player = {
   age: '',
@@ -24,7 +34,31 @@ const initialPlayerState: Player = {
   position: '',
   rating: '',
   teamId: 0,
-  default: true
+  default: true,
+};
+
+interface AlertProps extends PropsWithChildren {
+  onConfirm: () => Promise<void>;
+}
+
+const ConfirmDeletionAlert: FC<AlertProps> = ({ children, onConfirm }) => {
+  return (
+    <AlertDialog>
+      {children}
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Estas seguro</AlertDialogTitle>
+          <AlertDialogDescription>
+            Esta accion no se puede deshacer.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm}>Eliminar</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 };
 
 const Edit = ({ params }: { params: { id: string } }) => {
@@ -75,6 +109,19 @@ const Edit = ({ params }: { params: { id: string } }) => {
     }
   };
 
+  const deleteTeam = async () => {
+    try {
+      setInfo((prev) => ({ ...prev, loading: true }));
+      const { data: newState } = await api.delete(`/api/user/teams/${teamId}`);
+
+      setInfo((prev) => ({ ...prev, team: newState }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setInfo((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
   return (
     <>
       <AddPlayerModal
@@ -97,13 +144,15 @@ const Edit = ({ params }: { params: { id: string } }) => {
             </Link>
           </Button>
           <div className='w-full flex flex-col gap-4'>
-            <TeamName
-              name={team.name}
-              valid={teamIsValid(team)}
-              loading={loading}
-              teamId={teamId}
-              setInfo={setInfo}
-            />
+            <ConfirmDeletionAlert onConfirm={deleteTeam}>
+              <TeamName
+                name={team.name}
+                valid={teamIsValid(team)}
+                loading={loading}
+                teamId={teamId}
+                setInfo={setInfo}
+              />
+            </ConfirmDeletionAlert>
             <TeamAlignments
               selectedAlignmentId={team.alignmentId}
               setInfo={setInfo}
@@ -114,7 +163,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
               alignment={team.alignment}
               loading={loading}
               replacePlayer={replacePlayer}
-              className='hidden flex-col lg:flex '
+              className='hidden flex-col lg:flex'
             />
           </div>
         </div>

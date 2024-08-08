@@ -17,6 +17,7 @@ import {
   RenderPlayersList,
   RenderTeamsList,
 } from './RenderFilterOptions';
+import { filterSelectedPlayers } from '@/helpers/players';
 
 type ComboState = {
   countries: ApiCountry[];
@@ -133,10 +134,15 @@ const SearchByTeamOption: FC<Props> = ({ onPlayerSelect }) => {
         const teamByKey = teams.find((t) => t.team_key === teamKey);
 
         if (!teamByKey) throw Error('Unable to find team');
-        
+
         const { players } = teamByKey;
 
-        setCombos((prev) => ({ ...prev, players }));
+        const filteredPlayers = await filterSelectedPlayers(players);
+
+        setCombos((prev) => ({
+          ...prev,
+          players: filteredPlayers,
+        }));
       }
     } catch (error) {
       console.log(error);

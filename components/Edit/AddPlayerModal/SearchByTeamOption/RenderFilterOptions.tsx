@@ -188,7 +188,7 @@ export const RenderPlayersList: FC<PlayerListProps> = ({
 }) => {
   if (loading) return <SkeletonList />;
 
-  if (!list) return <NotDataFound />;
+  if (!list || !Array.isArray(list)) return <NotDataFound />;
 
   return (
     <>

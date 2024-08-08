@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { TeamShield } from '../TeamResume';
 import { Button } from '../ui/button';
-import { ClipboardPenLine } from 'lucide-react';
+import { ClipboardPenLine, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
 import {
@@ -27,7 +27,7 @@ import { AxiosError } from 'axios';
 import api from '@/lib/api';
 import { TeamInfo } from '@/models/pages/editTeam.model';
 import { DialogProps } from '@radix-ui/react-dialog';
-
+import { AlertDialogTrigger } from '../ui/alert-dialog';
 interface Props {
   name: string;
   valid: boolean;
@@ -148,11 +148,29 @@ const TeamName: FC<Props> = ({
           {!loading ? (
             <>
               <h1 className='text-4xl font-koho font-bold'>{name}</h1>
-              <Button variant={'outline'} size={'sm'} className='w-fit' asChild>
-                <DialogTrigger>
-                  <ClipboardPenLine size={18} /> Editar nombre
-                </DialogTrigger>
-              </Button>
+              <div className='flex gap-2'>
+                <Button
+                  variant={'outline'}
+                  size={'sm'}
+                  className='w-fit'
+                  asChild
+                >
+                  <DialogTrigger>
+                    <ClipboardPenLine size={18} /> Editar nombre
+                  </DialogTrigger>
+                </Button>
+                <Button
+                  variant={'destructive'}
+                  size={'sm'}
+                  className='w-fit'
+                  asChild
+                  disabled={!valid}
+                >
+                  <AlertDialogTrigger>
+                    <X size={18} /> Eliminar equipo
+                  </AlertDialogTrigger>
+                </Button>
+              </div>
             </>
           ) : (
             <>

@@ -1,4 +1,4 @@
-import { getTeamById } from '@/helpers/teams';
+import { getTeamById, deleteTeam } from '@/helpers/teams';
 import { NextApiRequest } from 'next';
 
 export async function GET(
@@ -11,6 +11,23 @@ export async function GET(
     if (!team) return new Response('Team not founded', { status: 404 });
 
     return Response.json({ data: team, status: 200, message: 'Team founded' });
+  } catch (error) {
+    console.log(error);
+    return new Response('Internal Server Error', { status: 500 });
+  }
+}
+
+export async function DELETE(
+  _req: NextApiRequest,
+  { params }: { params: { id: number } }
+) {
+  try {
+    console.log(params);
+    const team = await deleteTeam(Number(params?.id));
+
+    if (!team) return new Response('Team not founded', { status: 404 });
+
+    return Response.json({ data: team, status: 200, message: 'Team deleted' });
   } catch (error) {
     console.log(error);
     return new Response('Internal Server Error', { status: 500 });

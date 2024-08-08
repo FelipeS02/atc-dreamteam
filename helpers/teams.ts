@@ -128,3 +128,17 @@ export const editTeamAlignment = async (
     throw error;
   }
 };
+
+export const deleteTeam = async (teamId: number) => {
+  // Delete all players relations
+  await prisma.player.deleteMany({ where: { teamId } });
+
+  // Reset team to default
+  const updatedTeam = await prisma.team.update({
+    data: { alignmentId: null, name: `Equipo ${teamId}` },
+    where: { id: teamId },
+    include: { alignment: true, players: true },
+  });
+
+  return updatedTeam;
+};

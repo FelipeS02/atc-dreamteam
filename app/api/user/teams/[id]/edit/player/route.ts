@@ -1,13 +1,9 @@
-import { NextRequest } from 'next/server';
-import APIPlayer from '@/models/apiFootball/player.model';
 import { replacePlayer } from '@/helpers/players';
-
-export const dynamic = 'force-dynamic';
+import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const playerId = Number(req.nextUrl.searchParams.get('id') as string);
-    const newPlayer = (await req.json()) as APIPlayer;
+    const { playerId, newPlayer } = await req.json();
 
     const updatedPlayer = await replacePlayer(newPlayer, playerId);
 

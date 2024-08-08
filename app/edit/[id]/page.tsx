@@ -78,8 +78,8 @@ const Edit = ({ params }: { params: { id: string } }) => {
     try {
       setSubmitting(true);
       const { data: updatedPlayer } = await api.post(
-        `/api/user/teams/${teamId}/edit/player?id=${playerToReplace.id}`,
-        newPlayer,
+        `/api/user/teams/${teamId}/edit/player`,
+        { playerId: playerToReplace.id, newPlayer },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -95,8 +95,6 @@ const Edit = ({ params }: { params: { id: string } }) => {
         const playerIndex = newState.team.players.findIndex(
           (p) => p.id === updatedPlayer.id
         );
-
-        console.log(playerIndex)
 
         if (playerIndex === undefined) return newState;
 

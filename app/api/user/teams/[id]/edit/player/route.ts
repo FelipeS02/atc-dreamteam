@@ -2,6 +2,8 @@ import { NextRequest } from 'next/server';
 import APIPlayer from '@/models/apiFootball/player.model';
 import { replacePlayer } from '@/helpers/players';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const playerId = Number(req.nextUrl.searchParams.get('id') as string);
